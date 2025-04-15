@@ -19,6 +19,7 @@ yarn-error.log*
 .idea/
 *.sublime-project
 *.sublime-workspace
+.env
 
 # Sistemas operacionais
 .DS_Store
