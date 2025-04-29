@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from models import UserModel
 import logging
 from flask_swagger_ui import get_swaggerui_blueprint
+from flask_cors import CORS
 
 # Configurar logs
 logging.basicConfig(
@@ -21,6 +22,8 @@ logger = logging.getLogger(__name__)
 load_dotenv()
 
 app = Flask(__name__)
+CORS(app, resources={
+     r"/*": {"origins": "http://localhost:5500/frontend/index.html"}})
 
 # Conectar ao MongoDB
 MONGODB_URI = os.getenv("MONGODB_URI")
@@ -45,12 +48,16 @@ swaggerui_blueprint = get_swaggerui_blueprint(
 app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
 
 # Rota inicial
+
+
 @app.route('/')
 def home():
     logger.info("Rota '/' acessada")
     return jsonify({"message": "Backend rodando!"})
 
 # Rota de registro
+
+
 @app.route('/api/register', methods=['POST'])
 def register():
     """Registro de Usuário
@@ -111,6 +118,8 @@ def register():
     return jsonify({"message": "Usuário criado com sucesso!", "user_id": result}), 201
 
 # Rota de login
+
+
 @app.route('/api/login', methods=['POST'])
 def login():
     """Login de Usuário
@@ -181,6 +190,8 @@ def login():
     return jsonify({"message": "Login bem-sucedido!", "token": token}), 200
 
 # Rota protegida (exemplo)
+
+
 @app.route('/api/protected', methods=['GET'])
 def protected_route():
     """Rota Protegida
@@ -210,6 +221,7 @@ def protected_route():
                     type: string
     """
     return jsonify({"message": "Esta é uma rota protegida!"}), 200
+
 
 # Executar o servidor
 if __name__ == '__main__':
